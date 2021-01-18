@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleArena", "BattleArena\BattleArena.csproj", "{F84CB077-99B8-4FEF-BA8D-856AFD0ECBAB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F84CB077-99B8-4FEF-BA8D-856AFD0ECBAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F84CB077-99B8-4FEF-BA8D-856AFD0ECBAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F84CB077-99B8-4FEF-BA8D-856AFD0ECBAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F84CB077-99B8-4FEF-BA8D-856AFD0ECBAB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5950B01D-8FC7-4B15-9A2B-8FDFEA0366FB}
+	EndGlobalSection
+EndGlobal
