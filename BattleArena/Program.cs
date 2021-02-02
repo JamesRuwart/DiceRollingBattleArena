@@ -10,39 +10,60 @@ namespace BattleArena
         {
             HealthStats gameManager = new HealthStats();
 
+            RunGame(gameManager);
+
+        }
+
+        private static void RunGame(HealthStats gameManager)
+        {
             Console.WriteLine("Welcome to the Battle Arena!");
             Console.WriteLine("Roll the die to defeat your enemy.\n");
             Console.WriteLine("Here are your starting stats:");
             DisplayHealthStats(gameManager.Stamina, gameManager.PanicLevel, gameManager.EnemyHealth);
 
             int rollCount = 0;
+            VerifyRollCountLessThanTen(gameManager, rollCount);
+        }
+
+        private static int VerifyRollCountLessThanTen(HealthStats gameManager, int rollCount)
+        {
             while (rollCount < 10)
             {
                 string isUserReady = GetUserInput("Are you ready to roll? (y/n) ").ToLower();
                 if (isUserReady == "y")
                 {
                     int rollResult = RollDie();
-                    Console.WriteLine($"You rolled a {rollResult}.\n");
+                    Console.WriteLine($"\nYou rolled a {rollResult}.\n");
 
                     rollCount++;
                     int rollsLeft = 10 - rollCount;
 
-                    Tuple<int, int, int> rollSum = RollResult(rollResult, /*stamina, panicLevel, enemyHealth*/ gameManager.Stamina, gameManager.PanicLevel, gameManager.EnemyHealth);
+                    Tuple<int, int, int> rollSum = RollResult(rollResult, gameManager.Stamina, gameManager.PanicLevel, gameManager.EnemyHealth);
                     gameManager.Stamina = rollSum.Item1;
-                    gameManager.PanicLevel= rollSum.Item2;
+                    gameManager.PanicLevel = rollSum.Item2;
                     gameManager.EnemyHealth = rollSum.Item3;
 
-                    Tuple<int, int, int> battleSum = BattleResults(rollCount, /*stamina, panicLevel, enemyHealth*/ gameManager.Stamina, gameManager.PanicLevel, gameManager.EnemyHealth);
+                    Tuple<int, int, int> battleSum = BattleResults(rollCount, gameManager.Stamina, gameManager.PanicLevel, gameManager.EnemyHealth, gameManager);
                     gameManager.Stamina = battleSum.Item1;
                     gameManager.PanicLevel = battleSum.Item2;
                     gameManager.EnemyHealth = battleSum.Item3;
-                    
-                    Console.WriteLine($"You have {rollsLeft} rolls left.\n");
 
-                    Console.WriteLine("Current Stats:");
+                    Console.WriteLine($"\nYou have {rollsLeft} rolls left.\n");
+
+                    Console.WriteLine("\nCurrent Stats:");
                     DisplayHealthStats(gameManager.Stamina, gameManager.PanicLevel, gameManager.EnemyHealth);
                 }
+                else
+                {
+                    Console.WriteLine("Current Stats:");
+                    DisplayHealthStats(gameManager.Stamina, gameManager.PanicLevel, gameManager.EnemyHealth);
+                    Console.WriteLine("You have chosen to quit. YOU LOSE!");
+                    Environment.Exit(0);
+                }
             }
+            Console.WriteLine("You have run out of rolls. YOU LOSE!\n");
+            RunGame(gameManager);
+            return rollCount;
         }
 
         public static string GetUserInput(string message)
@@ -108,7 +129,7 @@ namespace BattleArena
         //If the enemy has died, another enemy enters the arena.The player’s panic and stamina stay where it is. 
         //If the player has run out of turns, their panic reaches the max level.
         //If the player has died, the dream starts over from the beginning.
-        public static Tuple<int, int, int> BattleResults(int rollCount, int stamina, int panicLevel, int enemyHealth)
+        public static Tuple<int, int, int> BattleResults(int rollCount, int stamina, int panicLevel, int enemyHealth, HealthStats gameManager)
         {
             if (enemyHealth > 0)
             {
@@ -130,21 +151,36 @@ namespace BattleArena
             else if (stamina == 0 || panicLevel == 0)
             {
                 Console.WriteLine("You have died. The dream restarts and you are back in the Battle Arena!");
-                //RestartGame();
+
+                Tuple<int, int, int> statVariables = ResetStats(gameManager.Stamina, gameManager.PanicLevel, gameManager.EnemyHealth, gameManager);
+                gameManager.Stamina = statVariables.Item1;
+                gameManager.PanicLevel = statVariables.Item2;
+                gameManager.EnemyHealth = statVariables.Item3;
+
+                RunGame(gameManager);
             }
             else if (panicLevel >= 20)
             {
                 Console.WriteLine("Your panic level has maxed out and you have died.");
                 Console.WriteLine("The dream restarts and you are back in the Battle Arena!");
-                //RestartGame();
+
+                Tuple<int, int, int> statVariables = ResetStats(gameManager.Stamina, gameManager.PanicLevel, gameManager.EnemyHealth, gameManager);
+                gameManager.Stamina = statVariables.Item1;
+                gameManager.PanicLevel = statVariables.Item2;
+                gameManager.EnemyHealth = statVariables.Item3;
+
+                RunGame(gameManager);
             }
             return Tuple.Create(stamina, panicLevel, enemyHealth);
         }
 
-        //public void RestartGame()
-        //{
-
-        //}
+        private static Tuple<int, int, int> ResetStats(int stamina, int panicLevel, int enemyHealth, HealthStats gameManager)
+        {
+            stamina = 10;
+            panicLevel = 10;
+            enemyHealth = 10;
+            return Tuple.Create(stamina, panicLevel, enemyHealth);
+        }
     }
 }
 

@@ -11,11 +11,11 @@ namespace BattleArena
         public int PanicLevel { get; set; } = 10;
         public int EnemyHealth { get; set; } = 10;
 
-        public HealthStats(int _stamina, int _panicLevel, int _enemyHealth)
+        public HealthStats(int stamina, int panicLevel, int enemyHealth)
         {
-        Stamina = _stamina;
-        PanicLevel = _panicLevel;
-        EnemyHealth = _enemyHealth;
+        Stamina = stamina;
+        PanicLevel = panicLevel;
+        EnemyHealth = enemyHealth;
         }
         
         public HealthStats()
